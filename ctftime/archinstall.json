@@ -1,0 +1,76 @@
+{
+    "!users": [
+        {
+            "!password": "player",
+            "sudo": true,
+            "username": "player"
+        }
+    ],
+    "additional-repositories": [],
+    "archinstall-language": "English",
+    "audio": "pipewire",
+    "bootloader": "grub-install",
+    "config_version": "2.5.0",
+    "custom-commands": [
+        "echo 'player ALL=(ALL) NOPASSWD: /usr/bin/pacman ' >> /etc/sudoers",
+        "su player -c 'git clone https://aur.archlinux.org/yay /tmp/yay; cd /tmp/yay; makepkg -si --noconfirm'",
+        "su player -c 'yay -Sy --noconfirm --removemake enum4linux smbmap'",
+
+        "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/player/.config/wallpapers/lucymoon.jpg'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/image-style -s 5'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/backdrop-cycle-enable -s true'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/backdrop-cycle-timer -s 10'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/backdrop-cycle-random-order -s true'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-trash -s false'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-home -s false'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false'",
+        "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -s false'",
+
+        "sed -i '$d' /etc/sudoers",
+        "sudo -H pip install --upgrade pip crackmapexec",
+        "systemctl enable vmtoolsd"
+    ],
+    "debug": false,
+    "desktop-environment": "xfce4",
+    "gfx_driver": "VMware / VirtualBox (open-source)",
+    "harddrives": [
+        "/dev/sda"
+    ],
+    "hostname": "ctftime",
+    "keyboard-layout": "us",
+    "mirror-region": {
+        "Spain": {
+            "http://ftp.rediris.es/mirror/archlinux/$repo/os/$arch": true,
+            "http://mirror.librelabucm.org/archlinux/$repo/os/$arch": true,
+            "https://mirror.librelabucm.org/archlinux/$repo/os/$arch": true
+        }
+    },
+    "mount_point": null,
+    "nic": {
+        "dhcp": true,
+        "dns": null,
+        "gateway": null,
+        "iface": null,
+        "ip": null,
+        "type": "nm"
+    },
+    "packages": [
+        "base-devel",
+        "firefox",
+        "git",
+        "python", "python-pip",
+        "open-vm-tools", "xf86-video-vmware",
+        "zip", "unzip",
+
+        "nmap",
+        "smbclient"
+    ],
+    "plugin": null,
+    "profile": {
+        "path": "/usr/lib/python3.10/site-packages/archinstall/profiles/desktop.py"
+    },
+    "script": "guided",
+    "silent": false,
+    "timezone": "Europe/Madrid",
+    "version": "2.5.0"
+}
