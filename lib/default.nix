@@ -49,7 +49,7 @@ in rec {
 
                 # Custom configuration
                 ../hardware/${hardware}.nix
-                ../machines/${hostname}
+                ../machines/${hostname}.nix
 
                 # Home manager
                 home-manager.nixosModules.home-manager {
