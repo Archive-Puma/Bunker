@@ -15,7 +15,9 @@
         "echo 'player ALL=(ALL) NOPASSWD: /usr/bin/pacman ' >> /etc/sudoers",
         "su player -c 'git clone https://aur.archlinux.org/yay /tmp/yay; cd /tmp/yay; makepkg -si --noconfirm'",
         "su player -c 'yay -Sy --noconfirm --removemake enum4linux smbmap'",
+        "sudo -H pip install --upgrade pip crackmapexec",
 
+        "su player -c 'xfconfd'",
         "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/player/.config/wallpapers/lucymoon.jpg'",
         "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/image-style -s 5'",
         "su player -c 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/backdrop-cycle-enable -s true'",
@@ -26,9 +28,9 @@
         "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-filesystem -s false'",
         "su player -c 'xfconf-query -c xfce4-desktop -p /desktop-icons/file-icons/show-removable -s false'",
 
-        "sed -i '$d' /etc/sudoers",
-        "sudo -H pip install --upgrade pip crackmapexec",
-        "systemctl enable vmtoolsd"
+        "git clone https://github.com/cosasdepuma/bunker /tmp/bunker; cd /tmp/bunker/ctftime; mv .config /home/player; chown -R player:player /home/player",
+        "systemctl enable vmtoolsd",
+        "sed -i '$d' /etc/sudoers"
     ],
     "debug": false,
     "desktop-environment": "xfce4",
