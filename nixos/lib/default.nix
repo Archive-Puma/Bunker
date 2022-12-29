@@ -2,36 +2,17 @@
 let
     lib = nixpkgs.lib;
 in rec {
-    # mkHomes :: list -> attrs
-    #   generates multiples homeManagerConfigurations
-    mkHomes = homes: builtins.mapAttrs (user: v: mkHome ({ inherit user; } // v)) homes;
-
-    # mkHome :: attrs -> attrs
-    #   generates a homeManagerConfiguration based on the user name
-    mkHome = user: home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [
-                {
-                    home = {
-                        username = "${user}";
-                        homeDirectory = "/home/${user}";
-                        stateVersion = lib.mkDefault "23.05";
-                    };
-                    programs.home-manager.enable = true;
-                }
-            ];
-        };
-
     # mkMachines :: list -> attrs
     #   generates multiples nixosConfigutations
     mkMachines = machines: builtins.mapAttrs (hostname: v: mkMachine ({ inherit hostname; } // v)) machines;
 
     # mkMachine :: attrs -> attrs
     #   generates a nixosConfiguration based on the machine hostname
-    mkMachine = { hostname, hardware ? "vmware", ... }: 
+    mkMachine = { hostname, user, hardware ? "vmware", ... }: 
         lib.nixosSystem {
             inherit system;
             modules = [
+                # Default configuration
                 {
                     # Networking
                     networking = {
@@ -66,8 +47,23 @@ in rec {
                     ];
                 }
 
+                # Custom configuration
                 ../hardware/${hardware}.nix
                 ../machines/${hostname}
+
+                # Home manager
+                home-manager.nixosModules.home-manager {
+                    home-manager.useGlobalPkgs = true;
+                    home-manager.useUserPackages = true;
+                    home-manager.users."${user}" = {
+                        home = {
+                            username = "${user}";
+                            homeDirectory = "/home/${user}";
+                            stateVersion = "23.05";
+                        };
+                        programs.home-manager.enable = true;
+                    };
+                }
             ];
         };
 }

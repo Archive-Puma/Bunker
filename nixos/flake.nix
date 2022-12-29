@@ -19,11 +19,7 @@
         lib = import ./lib { inherit nixpkgs home-manager pkgs system; };
     in {
         nixosConfigurations = lib.mkMachines {
-            ctftime = {};
-        };
-
-        homeConfigurations = lib.mkHomes {
-            player = {};
+            ctftime = { user = "player"; };
         };
     };
 }
