@@ -10,4 +10,6 @@ sudo mkswap -L SWAP /dev/sda2
 sudo mount /dev/disk/by-label/SYSTEM /mnt/
 sudo swapon /dev/disk/by-label/SWAP
 
-sudo nixos-generate-config --root /mnt
+sudo mkdir -p /mnt/etc
+sudo nix-shell -p git --run "git clone --depth 1 https://github.com/cosasdepuma/bunker /mnt/etc/nixos"
+sudo nix-install --flake /mnt/etc/nixos#$1
