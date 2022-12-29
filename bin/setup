@@ -13,3 +13,4 @@ sudo swapon /dev/disk/by-label/SWAP
 sudo mkdir -p /mnt/etc
 sudo nix-shell -p git --run "git clone --depth 1 https://github.com/cosasdepuma/bunker /mnt/etc/nixos"
 sudo nix-install --no-root-password --flake /mnt/etc/nixos#$1
+sudo reboot
