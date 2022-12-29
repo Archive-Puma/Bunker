@@ -1,7 +1,27 @@
-{ nixpkgs, system, nixosVersion ? "unstable", ... }:
+{ nixpkgs, system, home-manager, pkgs, nixosVersion ? "unstable", ... }:
 let
     lib = nixpkgs.lib;
 in rec {
+    # mkHomes :: list -> attrs
+    #   generates multiples homeManagerConfigurations
+    mkHomes = homes: builtins.mapAttrs (user: v: mkHome ({ inherit user; } // v)) homes;
+
+    # mkHome :: attrs -> attrs
+    #   generates a homeManagerConfiguration based on the user name
+    mkHome = user: home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [
+                {
+                    home = {
+                        username = "${user}";
+                        homeDirectory = "/home/${user}";
+                        stateVersion = lib.mkDefault "23.05";
+                    };
+                    programs.home-manager.enable = true;
+                }
+            ];
+        };
+
     # mkMachines :: list -> attrs
     #   generates multiples nixosConfigutations
     mkMachines = machines: builtins.mapAttrs (hostname: v: mkMachine ({ inherit hostname; } // v)) machines;
@@ -10,8 +30,7 @@ in rec {
     #   generates a nixosConfiguration based on the machine hostname
     mkMachine = { hostname, hardware ? "vmware", ... }: 
         lib.nixosSystem {
-            inherit nixpkgs system;
-
+            inherit system;
             modules = [
                 {
                     # Networking
@@ -37,6 +56,14 @@ in rec {
                     };
                     # NixOS version
                     system.stateVersion = lib.mkForce "unstable";
+                    # Experimental features
+                    nix.extraOptions = lib.mkForce "experimental-features = nix-command flakes";
+                    # Default packages
+                    environment.systemPackages = with pkgs;[
+                        curl
+                        git
+                        wget
+                    ];
                 }
 
                 ../hardware/${hardware}.nix

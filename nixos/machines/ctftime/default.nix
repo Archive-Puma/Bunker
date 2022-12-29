@@ -1,4 +1,6 @@
-{ config, pkgs, user ? "player", ... }: {
+{ config, pkgs, ... }: let
+  user = "player";
+in {
 
   # XFCE4 desktop environment
   services.xserver = {
@@ -25,8 +27,6 @@
 
   # Pre-installed packages
   environment.systemPackages = with pkgs; [
-    vim
-    wget
     firefox
   ];
 }

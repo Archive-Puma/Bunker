@@ -12,15 +12,18 @@
     outputs = { nixpkgs, home-manager, ... }:
     let
         system = "x86_64-linux";
-        lib = nixpkgs.lib;
-        llib = import ./lib { inherit nixpkgs system; };
         pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = true;
         };
+        lib = import ./lib { inherit nixpkgs home-manager pkgs system; };
     in {
-        nixosConfigurations = llib.mkMachines {
+        nixosConfigurations = lib.mkMachines {
             ctftime = {};
+        };
+
+        homeConfigurations = lib.mkHomes {
+            player = {};
         };
     };
 }
