@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 sudo parted /dev/sda -- mklabel msdos
 sudo parted /dev/sda -- mkpart primary ext4 1MiB -8GB
 sudo parted /dev/sda -- mkpart primary linux-swap -8GB 100%
@@ -12,5 +13,5 @@ sudo swapon /dev/disk/by-label/SWAP
 
 sudo mkdir -p /mnt/etc
 sudo nix-shell -p git --run "git clone --depth 1 https://github.com/cosasdepuma/bunker /mnt/etc/nixos"
-sudo nix-install --no-root-password --flake /mnt/etc/nixos#$1
+sudo nixos-install --no-root-password --flake /mnt/etc/nixos#$1
 sudo reboot
